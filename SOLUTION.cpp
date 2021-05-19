@@ -1,88 +1,48 @@
 #include "bits/stdc++.h"
 using namespace std;
+#define ll long long
 
-bool graph[101][101];
-int M;
-int N;
-
-bool can_match(int u, bool seen[], int match[])
+void solve()
 {
-    for (int v = 1; v <= N; v++)
+    int n;
+    cin >> n;
+    vector<int> x(1, 0);
+    vector<int> y(1, 0);
+
+    for (int i = 1; i <= n; i++)
     {
-        if (graph[u][v] && !seen[v])
-        {
-            seen[v] = true;
-
-            if (match[v] == -1 || can_match(match[v], seen, match))
-            {
-                match[v] = u;
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-void max_bipartite_matching()
-{
-    // Array to keep track of jobs that are assigned to a applicant
-    int match[N + 1];
-
-    // Init match[]
-    for (int i = 1; i <= N; i++)
-        match[i] = -1;
-
-    // Count of jobs assigned to applicants
-    int result = 0;
-    for (int u = 1; u <= M; u++)
-    {
-        bool seen[N + 1];
-        // Mark all jobs as not seen for the next applicant
-        for (int v = 1; v <= N; v++)
-            seen[v] = false;
-
-        // Find if applicant u can get any job
-        can_match(u, seen, match);
+        int v;
+        cin >> v;
+        if (v == 1)
+            x.push_back(i);
+        else
+            y.push_back(i);
     }
 
-    int count = 0;
+    if (x.size() == 1)
+    {
+        cout << 0;
+        return;
+    }
 
-    for (int i = 1; i <= N; i++)
-        if (match[i] != -1)
-            count++;
+    vector<vector<int>> dp(x.size(), vector<int>(y.size(), 1e9));
+    for (int i = 0; i < y.size(); i++)
+        dp[0][i] = 0;
 
-    cout << count << endl;
-    for (int i = 1; i <= N; i++)
-        if (match[i] != -1)
-            cout << match[i] << " " << i << endl;
+    for (int i = 1; i < x.size(); i++)
+        for (int j = i; j < y.size(); j++)
+            dp[i][j] = min(
+                dp[i][j - 1],
+                dp[i - 1][j - 1] + abs(x[i] - y[j]));
+
+    cout << dp[x.size() - 1][y.size() - 1];
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
     // freopen("SOLUTION.INP", "r", stdin);
-    // freopen("SOLUTION.OUT", "w", stdout);
-
-    cin >> M >> N;
-
-    for (int i = 1; i <= 100; i++)
-        for (int j = 1; j <= 100; j++)
-            graph[i][j] = false;
-
-    string line;
-    getline(cin, line);
-    int x, y;
-    string tmp;
-    while (getline(cin, line))
-    {
-        stringstream ss(line);
-        tmp = "";
-        ss >> x >> y;
-        graph[x][y] = true;
-    }
-    max_bipartite_matching();
-
+    solve();
     return 0;
 }

@@ -13,7 +13,8 @@ void print_mst(int parent[])
 {
     cout << "Edge \tWeight\n";
     for (int i = 1; i < V; i++)
-        cout << parent[i] << " - " << i << " \t" << graph[i][parent[i]] << " \n";
+        if (parent[i] != -1)
+            cout << parent[i] << " - " << i << " \t" << graph[i][parent[i]] << " \n";
 }
 
 int min_key(int key[], bool mst_set[])

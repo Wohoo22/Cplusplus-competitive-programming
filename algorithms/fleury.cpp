@@ -55,6 +55,7 @@ void fleury_util(int u, int edges)
             if (edges <= 1 || !is_bridge(u, v))
             {
                 // Remove edge from graph
+                // !!! ALERT !!! modify this if the graph is a directed graph.
                 tmp_graph[u][v] = tmp_graph[v][u] = 0;
                 // Reduce edge
                 edges--;
@@ -91,4 +92,14 @@ int main()
 {
     fleury();
     return 0;
+    // Output:
+    /*
+        1 - 0
+    0 - 2
+    2 - 1
+    1 - 3
+    3 - 0
+    0 - 4
+    4 - 3
+    */
 }
