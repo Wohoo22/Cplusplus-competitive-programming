@@ -1,105 +1,137 @@
-#include "bits/stdc++.h"
+// A C++ program print Eulerian Trail in a given Eulerian or Semi-Eulerian Graph
+#include <iostream>
+#include <string.h>
+#include <algorithm>
+#include <list>
 using namespace std;
 
-#define ll long long
-#define V 5
-#define E 10
-int graph[V][V] = {{0, 1, 1, 1, 1},
-                   {1, 0, 1, 1, 0},
-                   {1, 1, 0, 1, 0},
-                   {1, 1, 1, 0, 1},
-                   {1, 0, 0, 1, 0}};
-
-int tmp_graph[V][V];
-
-void init_tmp_graph()
+class Graph
 {
-    for (int i = 0; i < V; i++)
-        for (int j = 0; j < V; j++)
-            tmp_graph[i][j] = graph[i][j];
-}
-
-int find_start_vertex()
-{
-    for (int i = 0; i < V; i++)
+    int V;          // No. of vertices
+    list<int> *adj; // A dynamic array of adjacency lists
+public:
+    Graph(int V)
     {
-        int deg = 0;
-        for (int j = 0; j < V; j++)
-            if (tmp_graph[i][j])
-                deg++;
-        // Return if degree is odd
-        if (deg % 2 != 0)
-            return i;
+        this->V = V;
+        adj = new list<int>[V];
     }
-    return 0;
-}
+    ~Graph() { delete[] adj; }
 
-bool is_bridge(int u, int v)
-{
-    int deg = 0;
-    for (int i = 0; i < V; i++)
-        if (tmp_graph[v][i])
-            deg++;
-    if (deg > 1)
-        return false;
-    return true;
-}
-
-void fleury_util(int u, int edges)
-{
-    for (int v = 0; v < V; v++)
+    void addEdge(int u, int v)
     {
-        if (tmp_graph[u][v])
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    void rmvEdge(int u, int v);
+
+    void printEulerTour();
+    void printEulerUtil(int s);
+
+    int DFSCount(int v, bool visited[]);
+
+    bool isValidNextEdge(int u, int v);
+};
+
+void Graph::printEulerTour()
+{
+    int u = 0;
+    for (int i = 0; i < V; i++)
+        if (adj[i].size() & 1)
         {
-            // When (u,v) edge is present and not forming a bridge
-            if (edges <= 1 || !is_bridge(u, v))
-            {
-                // Remove edge from graph
-                // !!! ALERT !!! modify this if the graph is a directed graph.
-                tmp_graph[u][v] = tmp_graph[v][u] = 0;
-                // Reduce edge
-                edges--;
+            u = i;
+            break;
+        }
+    printEulerUtil(u);
+    cout << endl;
+}
 
-                // Print edge
-                cout << u << " - " << v << endl;
-
-                // Call for next vertice
-                fleury_util(v, edges);
-            }
+void Graph::printEulerUtil(int u)
+{
+    list<int>::iterator i;
+    for (i = adj[u].begin(); i != adj[u].end(); ++i)
+    {
+        int v = *i;
+        if (v != -1 && isValidNextEdge(u, v))
+        {
+            cout << u << "-" << v << " ";
+            rmvEdge(u, v);
+            printEulerUtil(v);
         }
     }
 }
 
-int count_edges()
+bool Graph::isValidNextEdge(int u, int v)
 {
-    int count = 0;
-    for (int i = 0; i < V; i++)
-        for (int j = 0; j < V; j++)
-            if (graph[i][j])
-                count++;
+    int count = 0; // To store count of adjacent vertices
+    list<int>::iterator i;
+    for (i = adj[u].begin(); i != adj[u].end(); ++i)
+        if (*i != -1)
+            count++;
+    if (count == 1)
+        return true;
+
+    bool visited[V];
+    memset(visited, false, V);
+    int count1 = DFSCount(u, visited);
+
+    rmvEdge(u, v);
+    memset(visited, false, V);
+    int count2 = DFSCount(u, visited);
+
+    addEdge(u, v);
+
+    return (count1 > count2) ? false : true;
+}
+
+void Graph::rmvEdge(int u, int v)
+{
+    list<int>::iterator iv = find(adj[u].begin(), adj[u].end(), v);
+    *iv = -1;
+
+    list<int>::iterator iu = find(adj[v].begin(), adj[v].end(), u);
+    *iu = -1;
+}
+
+int Graph::DFSCount(int v, bool visited[])
+{
+    visited[v] = true;
+    int count = 1;
+
+    list<int>::iterator i;
+    for (i = adj[v].begin(); i != adj[v].end(); ++i)
+        if (*i != -1 && !visited[*i])
+            count += DFSCount(*i, visited);
+
     return count;
 }
 
-void fleury()
-{
-    init_tmp_graph();
-    int edges = count_edges();
-    int start = find_start_vertex();
-    fleury_util(start, edges);
-}
-
+// Driver program to test above function
 int main()
 {
-    fleury();
+    // Let us first create and test graphs shown in above figure
+    Graph g1(4);
+    g1.addEdge(0, 1);
+    g1.addEdge(0, 2);
+    g1.addEdge(1, 2);
+    g1.addEdge(2, 3);
+    g1.printEulerTour();
+
+    Graph g2(3);
+    g2.addEdge(0, 1);
+    g2.addEdge(1, 2);
+    g2.addEdge(2, 0);
+    g2.printEulerTour();
+
+    Graph g3(5);
+    g3.addEdge(1, 0);
+    g3.addEdge(0, 2);
+    g3.addEdge(2, 1);
+    g3.addEdge(0, 3);
+    g3.addEdge(3, 4);
+    g3.addEdge(3, 2);
+    g3.addEdge(3, 1);
+    g3.addEdge(2, 4);
+    g3.printEulerTour();
+
     return 0;
-    // Output:
-    /*
-        1 - 0
-    0 - 2
-    2 - 1
-    1 - 3
-    3 - 0
-    0 - 4
-    4 - 3
-    */
 }

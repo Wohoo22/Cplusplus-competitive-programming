@@ -1,48 +1,72 @@
 #include "bits/stdc++.h"
 using namespace std;
+#define FAST                          \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL);
+#define INP freopen("SOLUTION.INP", "r", stdin);
 #define ll long long
+#define MOD 1000000007
+#define CHARNT \
+    int char_int(char c) { return c - 'a'; }
+#define CUTLAST \
+    int cut_last(int x, int n) { return x % (int)pow(10, n); }
+#define INTCHR \
+    char int_char(int i) { return "abcdefghijklmnopqrstuvwxyz"[i]; }
+/*
+    RANDOM:
+    rand() % (max – min + 1)
+*/
+
+vector<Prod> prods;
+
+class Prod
+{
+public:
+    ll id;
+    ll req;
+    ll disc;
+};
+
+Prod create(ll id, ll req, ll disc)
+{
+    Prod p;
+    p.id = id;
+    p.req = req;
+    p.disc = disc;
+    return p;
+}
 
 void solve()
 {
-    int n;
+    ll n;
     cin >> n;
-    vector<int> x(1, 0);
-    vector<int> y(1, 0);
 
-    for (int i = 1; i <= n; i++)
+    prods.push_back(create(0, 0, 0));
+
+    for (ll i = 1; i < n; i++)
     {
-        int v;
-        cin >> v;
-        if (v == 1)
-            x.push_back(i);
-        else
-            y.push_back(i);
+        ll req, disc;
+        cin >> req >> disc;
+        prods.push_back(create(i, req, disc));
     }
 
-    if (x.size() == 1)
-    {
-        cout << 0;
-        return;
-    }
-
-    vector<vector<int>> dp(x.size(), vector<int>(y.size(), 1e9));
-    for (int i = 0; i < y.size(); i++)
-        dp[0][i] = 0;
-
-    for (int i = 1; i < x.size(); i++)
-        for (int j = i; j < y.size(); j++)
-            dp[i][j] = min(
-                dp[i][j - 1],
-                dp[i - 1][j - 1] + abs(x[i] - y[j]));
-
-    cout << dp[x.size() - 1][y.size() - 1];
+    
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    // freopen("SOLUTION.INP", "r", stdin);
-    solve();
+    FAST;
+#ifndef ONLINE_JUDGE
+    INP;
+#endif
+    int t = 1;
+    while (t--)
+        solve();
     return 0;
 }
+/* 
+    [Linux] Set/Unset read-only:
+    sudo chattr +i TEMPLATE.cpp
+    sudo chattr -i TEMPLATE.cpp
+*/

@@ -4,7 +4,7 @@ using namespace std;
     ios_base::sync_with_stdio(false); \
     cin.tie(NULL);                    \
     cout.tie(NULL);
-#define INP freopen("SOLUTION.INP", "r", stdin);
+#define OUT freopen("CORRECT.INP", "w", stdout);
 #define ll long long
 #define MOD 1000000007
 #define CHARNT \
@@ -13,29 +13,34 @@ using namespace std;
     int cut_last(int x, int n) { return x % (int)pow(10, n); }
 #define INTCHR \
     char int_char(int i) { return "abcdefghijklmnopqrstuvwxyz"[i]; }
-/*
-    RANDOM:
-    rand() % (max – min + 1)
-*/
 
-void solve()
+INTCHR;
+
+void tc()
 {
+    ll lo = 2;
+    ll hi = 10;
+
+    ll n = rand() % (hi - 2 - lo + 1) + 1;
+    ll k = rand() % (hi - lo + 1) + 1;
+    
+    cout << n << " " << k << endl;
+    for (int i = 0; i < n; i++)
+    {
+        int l = rand() % (24 + 1) + 1;
+        cout << int_char(l);
+    }
+    cout
+        << endl;
 }
 
 int main()
 {
-    FAST;
-#ifndef ONLINE_JUDGE
-    INP;
-#endif
-    int t;
-    cin >> t;
-    while (t--)
-        solve();
+    OUT;
+    int t = 2000;
+    cout << t << endl;
+    for (int i = 0; i < t; i++)
+        tc();
+
     return 0;
 }
-/* 
-    [Linux] Set/Unset read-only:
-    sudo chattr +i TEMPLATE.cpp
-    sudo chattr -i TEMPLATE.cpp
-*/

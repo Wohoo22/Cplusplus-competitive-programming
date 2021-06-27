@@ -31,24 +31,18 @@ int find_parent(int v, int parent[])
 
 void kruskal()
 {
-    // Save root node of every vertice
     int parent[V];
 
-    // Init parent
     for (int v = 0; v < V; v++)
         parent[v] = -1;
 
-    // Array containing all edges in MST
     vector<pair<int, int>> mst_e;
 
-    // Array containing weight of all edges in MST
     vector<int> mst_w;
 
-    // MST has V-1 edges
     int mst_size = 0;
     while (mst_size < V - 1)
     {
-        // Find edge with minimum weight
         int min_w = INT_MAX;
         pair<int, int> min_edge;
 
@@ -59,30 +53,19 @@ void kruskal()
                     min_edge.first = u,
                     min_edge.second = v;
 
-        // Find root of 2 vertices in the min_edge
         int u = find_parent(min_edge.first, parent);
         int v = find_parent(min_edge.second, parent);
 
-        /* \
-        If parent of 2 vertices are different 
-        -> this edge doesn't form a cycle in MST
-        -> this edge can be added to MST
-        */
         if (u != v)
         {
-            // Merge 2 trees
             parent[v] = u;
 
-            // Save edge to mst_e
             mst_e.push_back(min_edge);
-            // Save weight to mst_w
             mst_w.push_back(graph[min_edge.first][min_edge.second]);
 
-            // Increase mst_size
             mst_size++;
         }
 
-        // Set min_edge as INF so that it won't be found again
         graph[min_edge.first][min_edge.second] = INT_MAX;
     }
 
