@@ -79,6 +79,12 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "coroutine": "cpp"
+    },
+    "hts.path.correctSolution": "B.cpp",
+    "hts.path.wrongSolution": "S.cpp",
+    "hts.path.generatorFile": "G.cpp",
+    "hts.path.checker": "fcmp.cpp",
+    "hts.generator.argument": ""
 }

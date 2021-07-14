@@ -7,8 +7,8 @@ using namespace std;
 
 class Graph
 {
-    int V;          // No. of vertices
-    list<int> *adj; // A dynamic array of adjacency lists
+    int V;      
+    list<int> *adj; 
 public:
     Graph(int V)
     {
@@ -62,7 +62,7 @@ void Graph::printEulerUtil(int u)
 
 bool Graph::isValidNextEdge(int u, int v)
 {
-    int count = 0; // To store count of adjacent vertices
+    int count = 0; 
     list<int>::iterator i;
     for (i = adj[u].begin(); i != adj[u].end(); ++i)
         if (*i != -1)

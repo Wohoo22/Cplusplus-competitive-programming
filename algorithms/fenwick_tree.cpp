@@ -8,10 +8,8 @@ int fenwick_tree[N + 1];
 
 int query_fenwick_tree(int index)
 {
-    // Index in fenwick tree is 1 more than array index
     index++;
     int ans = 0;
-    // Traverse all ancestors of fenwick_tree[index]
     while (index > 0)
     {
         ans += fenwick_tree[index];
@@ -22,9 +20,7 @@ int query_fenwick_tree(int index)
 
 void update_fenwick_tree(int index, int value)
 {
-    // Index in fenwick tree is 1 more than array index
     index++;
-    // Traverse all ancestor and add value
     while (index <= N)
     {
         fenwick_tree[index] += value;

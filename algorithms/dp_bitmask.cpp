@@ -4,13 +4,10 @@ using namespace std;
 #define ll long long int
 #define MOD 1000000007
 
-// cap_list[i] -> guys that have cap[i]
 vector<int> cap_list[101];
 
-// dp[mask][cap] -> ways to assign cap to guys
 int dp[1025][101];
 
-// Mask with all n bit set as all n guys wearing cap
 int final_mask;
 
 void read_input(int n)
@@ -34,35 +31,20 @@ void read_input(int n)
     }
 }
 
-// i -> cap[i]
 ll count_ways_util(int mask, int i)
 {
-    // Every guy has his cap
     if (mask == final_mask)
         return 1;
-
-    // Not every guy has a cap, but out of cap
     if (i > 100)
         return 0;
-
-    // If already computed
     if (dp[mask][i] != -1)
         return dp[mask][i];
-
-    // Ways in which this cap is not included
     ll ways = count_ways_util(mask, i + 1);
-
-    // size is the total number of guys having cap with id i.
     int size = cap_list[i].size();
-
-    // Assign this cap to a guy one by one, and recur for the remaining caps
     for (int j = 0; j < size; j++)
     {
-        // If this guy has already had a cap, move to the next guy
         if (mask & (1 << cap_list[i][j]))
             continue;
-
-        // Else assign him with this cap, recur for the remaining caps with the updated mask
         ways += count_ways_util(mask | (1 << cap_list[i][j]), i + 1);
         ways %= MOD;
     }
@@ -73,10 +55,7 @@ ll count_ways_util(int mask, int i)
 
 ll count_ways(int n)
 {
-    // Init final_mask
     final_mask = (1 << n) - 1;
-
-    // Init dp[][]
     for (int i = 0; i < 1025; i++)
         for (int j = 0; j < 101; j++)
             dp[i][j] = -1;

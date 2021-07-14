@@ -19,14 +19,10 @@ void print(int dist[V][V])
 
 void floyd()
 {
-    // Ouput matrix, with dist[i][j] as minimum distance between vertices i and j
     int dist[V][V];
-
-    // Init dist
     for (int u = 0; u < V; u++)
         for (int v = 0; v < V; v++)
             dist[u][v] = graph[u][v];
-
     for (int k = 0; k < V; k++)
         for (int u = 0; u < V; u++)
             for (int v = 0; v < V; v++)

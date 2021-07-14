@@ -8,11 +8,8 @@ vector<int> g[n + 1];
 
 /*--------------------------*/
 
-// Log
 int logn = (int)ceil(log2(n));
-// Dp
 int memo[n + 1][n];
-// Level
 int lev[n + 1];
 
 void dfs(int u, int p)
@@ -32,34 +29,19 @@ void dfs(int u, int p)
 
 int lca(int u, int v)
 {
-    // The node which is present farthest
-    // from the root node is taken as u
-    // If v is farther from root node
-    // then swap the two
     if (lev[u] < lev[v])
     {
         int temp = u;
         u = v;
         v = temp;
     }
-
-    // Find the ancestor of u
-    // which is the same level as u
     for (int i = logn; i >= 0; i--)
     {
         if (lev[u] + (int)pow(2, i) <= lev[v])
             u = memo[u][i];
     }
-
-    // If v is the ancestor of u
-    // which is the same level as v
     if (u == v)
         return v;
-
-    // Finding the node closest to the root which is
-    // not the common ancestor of u and v i.e. a node
-    // x such that x is not the common ancestor of u
-    // and v but memo[x][0] is
     for (int i = logn; i >= 0; i--)
     {
         if (memo[u][i] != memo[v][i])

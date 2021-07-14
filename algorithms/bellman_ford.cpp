@@ -19,15 +19,10 @@ int graph[][3] = {
 
 void bellman_ford(int src)
 {
-    // Init distance of all vertices is INF
     int dis[V];
     for (int i = 0; i < V; i++)
         dis[i] = INT_MAX;
-
-    // Init distance of source as 0
     dis[src] = 0;
-
-    // A path from src to any other vertice can have at most V-1 edges
     for (int i = 0; i < V - 1; i++)
     {
         for (int e = 0; e < E; e++)

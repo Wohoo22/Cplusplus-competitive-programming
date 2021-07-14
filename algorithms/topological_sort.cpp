@@ -13,36 +13,25 @@ void create_graph()
     graph[5][2] = graph[5][0] = graph[4][0] = graph[4][1] = graph[2][3] = graph[3][1] = 1;
 }
 
-// Save the order after topo-sorted
 stack<int> st;
 void topo_sort_util(int u, bool visited[])
 {
-    // Mark u as visited
     visited[u] = true;
-
-    // Dfs
     for (int v = 0; v < V; v++)
         if (graph[u][v] && !visited[v])
             topo_sort_util(v, visited);
-
-    // Push u to stack after visiting all its neighbor
     st.push(u);
 }
 
 void topo_sort()
 {
-
-    // Save visited vertices
     bool visited[V];
     for (int v = 0; v < V; v++)
         visited[v] = false;
-
-    // Dfs
     for (int v = 0; v < V; v++)
         if (!visited[v])
             topo_sort_util(v, visited);
 
-    // Print
     while (!st.empty())
         cout << st.top() << " ",
             st.pop();

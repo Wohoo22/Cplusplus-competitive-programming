@@ -8,18 +8,12 @@ int sparse_table[n][n];
 
 void build_sparse_table()
 {
-    // Init value for intervals with length 1
     for (int i = 0; i < n; i++)
         sparse_table[i][0] = a[i];
-
-    // Computes values from smaller to bigger intervals
-    // (1 << n) == 2^n
     for (int j = 1; (1 << j) <= n; j++)
     {
-        // Compute minimum value for all intervals with size 2^j
         for (int i = 0; (i + (1 << j) - 1) < n; i++)
         {
-            // sparse_table[1][2^4]
             sparse_table[i][j] = min(
                 sparse_table[i][j - 1],                   // sparse_table[1][2^3]
                 sparse_table[i + (1 << (j - 1))][j - 1]); // sparse_table[1+2^3][2^3]
@@ -29,7 +23,6 @@ void build_sparse_table()
 
 int query(int L, int R)
 {
-    // Highest power of 2 -> P
     // P <= (R-L+1)
     int P = (int)log2(R - L + 1);
 
