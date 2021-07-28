@@ -23,13 +23,38 @@ int main(int argc, char *argv[])
 {
     registerGen(argc, argv, 1);
     FAST;
-    int t =  rnd.next(1, 10);
+    int t = 20;
     cout << t << endl;
-    for (int i=0; i<t; i++)
-    {
-        int m =  rnd.next(1, 5);
-        int n = rnd.next(1, 20);
-        cout <<  n * 1000 <<' ' << m << endl;
+    while (t--) {
+        int n =  rnd.next(3, 10);
+        int m =  rnd.next(1, n-1);
+        cout << n << ' ' << m << endl;
+
+        vector<int> row;
+        vector<int> col;
+        for (int i=1; i<=n; i++) {
+            row.push_back(i);
+            col.push_back(i);
+        }
+
+        while(m--) {
+            int x = rnd.any(row);
+            int y = rnd.any(col);
+            for (int i=0; i<row.size(); i++) {
+                if (x == row[i]) {
+                    row.erase(row.begin()+i);
+                    break;
+                }
+            }
+            for (int i=0; i<col.size(); i++) {
+                if (y == col[i]) {
+                    col.erase(col.begin()+i);
+                    break;
+                }
+            }
+
+            cout << x << ' ' << y << endl;
+        }
     }
 }
 /* 

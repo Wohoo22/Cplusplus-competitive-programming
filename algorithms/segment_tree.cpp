@@ -2,8 +2,8 @@
 #include <math.h>
 #define MAX 1000
 
-int tree[MAX] = {0}; // To store segment tree
-int lazy[MAX] = {0}; // To store pending updates
+int tree[MAX] = {0}; 
+int lazy[MAX] = {0}; 
 
 void update_range_util(int si, int ss, int se, int us,
                        int ue, int diff)

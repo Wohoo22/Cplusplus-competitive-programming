@@ -10,164 +10,100 @@ using namespace std;
 #define CI \
     int ci(char c) { return c - 'a'; }
 #define CUTLAST \
-    int cut_last(ll x, ll n) { return x % (ll)pow(10, n); }
+    int cut_last(int x, int n) { return x % (int)pow(10, n); }
 #define IC \
     char ic(int i) { return "abcdefghijklmnopqrstuvwxyz"[i]; }
 /*
     RANDOM:
     rand() % (max – min + 1)
 */
-CUTLAST;
-vector<ll> money;
-
-ll get_mx(ll upper) {
-    for (int i=money.size()-1; i>=0; i--)
-        if (money[i] <= upper)
-            return money[i];
-    return 1;
-}
-
-vector<vector<ll>> subsets;
-
-void comb_util(int chosen[], vector<ll> &arr,
-					int index, int r, int start, int end)
-{
-	if (index == r)
-	{
-        vector<ll> ss;
-		for (int i = 0; i < r; i++) {
-            ss.push_back(arr[chosen[i]]);
-        }
-         
-        subsets.push_back(ss);
-		return;
-	}
-	for (int i = start; i <= end; i++)
-	{
-		chosen[index] = i;
-		comb_util(chosen, arr, index + 1,
-											r, i, end);
-	}
-	return;
-}
-
-void comb(vector<ll> &arr, int n, int r)
-{
-    subsets.clear();
-	int chosen[r+1];
-	comb_util(chosen, arr, 0, r, 0, n-1);
-}
-
-bool same(vector<ll> &a, vector<ll> &b)
-{
-    if (a.size() != b.size()) return false;
-    sort(a.begin(), a.end());    
-    sort(b.begin(), b.end());
-    for (int i=0; i<a.size(); i++)
-        if (a[i] != b[i])
-            return false;
-    return true;
-}
-
-vector<ll> vals = {1,2,3,5};
-ll calc(ll size, ll sum) 
-{
-    while (sum % 10 == 0)
-        sum /= 10;
-    comb(vals, vals.size(), size);
-
-    vector<vector<ll>> valids;
-    for (int i=0; i<subsets.size(); i++)
-    {
-        vector<ll> set = subsets[i];
-        ll s=0;
-        for (int j=0; j<set.size(); j++)
-            s += set[j];
-        if (sum == s)
-            valids.push_back(set);
-    }
-
-    ll ans=0;
-    for (int i=0; i<valids.size(); i++)
-    {
-        vector<ll> set = valids[i];
-        bool flag=true;
-        for (int j=0; j<i; j++)
-            if (same(set, valids[j]))
-            {
-                flag=false;
-                break;
-            }
-        if (flag) ans++;
-    }
-
-    return ans;
-}
 
 void solve()
 {
-    ll w, c;
-    cin >> w >> c;
+    int n;
+    cin >> n;
+    cin.ignore();
 
-    if (cut_last(w,3) > 0) 
-    {
-        cout << 0 << endl;
-        return;
-    }
+    vector<pair<int,int>> action;
+    vector<int> a;
 
-    money.clear();
-    for (int i=0; i<=c; i++)
-        for (int j=1000; j<=5000; j+=1000)
-            if (j != 4000)
-                money.push_back(j * pow(10,i));
-    
-    ll wt=w;
-    ll size=0;
-    
-    ll lst_seg_len = -1;
-    vector<ll> seg_size;
-    vector<ll> seg_sum;
-    while (wt > 0)
-    {
-        ll mx = get_mx(wt);
-        ll times = floor((double)wt/mx);
-        size += times;
-        wt -= mx*times;
-
-        string s = to_string(mx);
-
-        if (lst_seg_len == -1)
-        {
-            seg_size.push_back(1);
-            seg_sum.push_back(mx);
-            lst_seg_len = s.size();
-            continue;
+    for (int i=0; i< 2 * n; i++) {
+        string s;
+        getline(cin,s);
+        if (s[0] == '+') {
+            action.push_back({0,0});
+        } else {
+            string num = "";
+            for (int j=2; j<s.size(); j++) {
+                num.push_back(s[j]);
+            }
+            action.push_back({1,stoi(num)});
+            a.push_back(stoi(num));
         }
-
-        if (s.size() == lst_seg_len)
-            seg_size[seg_size.size()-1] += times,
-            seg_sum[seg_sum.size()-1] += mx*times;
-        else 
-            seg_size.push_back(times),
-            seg_sum.push_back(mx*times);
-        lst_seg_len = s.size();
     }
 
-    ll ways=1;
-    for (int i=0; i<seg_size.size(); i++)
-        ways *= calc(seg_size[i], seg_sum[i]);
+    // 0 is +
+    // 1 is -
+    
+    cout << "Actions\n";
+    for (int i=0; i<2 *n; i++) {
+        cout << action[i].first << ' ' << action[i].second << endl;
+    }
+    cout << "-------\n";
 
-    cout << size << ' ' << ways << endl;
+    sort(a.begin(), a.end());
+
+    priority_queue<int, vector<int>, greater<int> > q;
+    vector<bool> in_q(n+1, false);
+    int pointer = a.size()-1;
+
+    vector<int> res;
+    for (int i=0; i<2*n; i++){
+        pair<int,int> act = action[i];
+        if (act.first == 0) {
+            pair<int,int> nxt = action[i+1];
+            if (nxt.first == 1) {
+                int m = nxt.second;
+                if (!in_q[m])
+                {
+                    q.push(m);
+                    in_q[m] = true;
+                    res.push_back(m);
+                } 
+            } else {
+                while (in_q[a[pointer]])
+                    pointer--;
+                if (pointer >= 0) {
+                    q.push(a[pointer]);
+                    in_q[a[pointer]] = true;
+                    res.push_back(a[pointer]);
+                    pointer--;
+                }
+            }
+        } else {
+            int min = q.top();
+            q.pop();
+            cout << "ACT " << act.first << ' ' << act.second << endl;
+            cout << "MIN " << min << endl;
+            if (min != act.second) {
+                cout << "NO";
+                return;
+            }
+        }
+    }
+
+    cout << "YES\n";
+    for (int i=0; i<res.size(); i++)
+        cout << res[i] << ' ';
 }
 
 int main()
 {
     FAST;
-    //  INP;
-    int t;
-    cin >> t;
-    while (t--)
-        solve();
+#ifndef ONLINE_JUDGE
+    INP;
+#endif
+    solve();
     return 0;
 }
 /* 
