@@ -18,91 +18,51 @@ using namespace std;
     rand() % (max – min + 1)
 */
 
+int matrix[1000][1000];
+int ro, co;
+
+bool contains(int k, int r, int c) {
+    for (int i=0; i<ro; i++) {
+        if (matrix[i][c] == k)
+            return true;
+    }
+    for (int i=0; i<co; i++)
+        if (matrix[r][i] == k)
+            return true;
+    return false;
+}
+
 void solve()
 {
-    int n;
-    cin >> n;
-    cin.ignore();
-
-    vector<pair<int,int>> action;
-    vector<int> a;
-
-    for (int i=0; i< 2 * n; i++) {
-        string s;
-        getline(cin,s);
-        if (s[0] == '+') {
-            action.push_back({0,0});
-        } else {
-            string num = "";
-            for (int j=2; j<s.size(); j++) {
-                num.push_back(s[j]);
-            }
-            action.push_back({1,stoi(num)});
-            a.push_back(stoi(num));
-        }
-    }
-
-    // 0 is +
-    // 1 is -
-    
-    cout << "Actions\n";
-    for (int i=0; i<2 *n; i++) {
-        cout << action[i].first << ' ' << action[i].second << endl;
-    }
-    cout << "-------\n";
-
-    sort(a.begin(), a.end());
-
-    priority_queue<int, vector<int>, greater<int> > q;
-    vector<bool> in_q(n+1, false);
-    int pointer = a.size()-1;
-
-    vector<int> res;
-    for (int i=0; i<2*n; i++){
-        pair<int,int> act = action[i];
-        if (act.first == 0) {
-            pair<int,int> nxt = action[i+1];
-            if (nxt.first == 1) {
-                int m = nxt.second;
-                if (!in_q[m])
+    cin >> ro >> co;
+    for (int i=0; i<ro; i++)
+        for (int j=0; j<co; j++)
+            matrix[i][j] = -1;
+    for (int i=0; i<ro; i++)
+        for (int j=0; j<co; j++) {
+            for (int k=0; k<=1000; k++) {
+                if (!contains(k, i, j))
                 {
-                    q.push(m);
-                    in_q[m] = true;
-                    res.push_back(m);
-                } 
-            } else {
-                while (in_q[a[pointer]])
-                    pointer--;
-                if (pointer >= 0) {
-                    q.push(a[pointer]);
-                    in_q[a[pointer]] = true;
-                    res.push_back(a[pointer]);
-                    pointer--;
+                    matrix[i][j] = k;
+                    break;
                 }
             }
-        } else {
-            int min = q.top();
-            q.pop();
-            cout << "ACT " << act.first << ' ' << act.second << endl;
-            cout << "MIN " << min << endl;
-            if (min != act.second) {
-                cout << "NO";
-                return;
-            }
         }
+    
+    int sum = 0;
+    for (int i=0; i<ro; i++) {
+        for (int j=0; j<co; j++) {
+            cout << matrix[i][j] << ' ';
+            sum += matrix[i][j];
+        }
+        cout << endl;
     }
-
-    cout << "YES\n";
-    for (int i=0; i<res.size(); i++)
-        cout << res[i] << ' ';
+    cout << "sum " << sum;
 }
 
 int main()
 {
     FAST;
-#ifndef ONLINE_JUDGE
-    INP;
-#endif
     solve();
     return 0;
 }
