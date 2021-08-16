@@ -58,14 +58,21 @@ ll ncr(ll N, ll R, ll p)
 
 
 void precompute() {
-    ll a=1;
-    pow_2[0]=1;
-    pow_2[1]=2;
-    for (ll i=2; i<=N*2; i++) 
-        pow_2[i] = (pow_2[i-1] * 2) % MOD;
     inverse_of_number(MOD);
     inverse_of_factorial(MOD);
     factorial(MOD);
+}
+
+ll mpow(ll base, ll exp) {
+    ll res = 1;
+    while (exp) {
+        if (exp % 2 == 1){
+            res = (res * base) % MOD;
+    }
+    exp >>= 1;
+    base = (base * base) % MOD;
+    }
+    return res;
 }
 
 void solve()
@@ -74,7 +81,7 @@ void solve()
     cin >> n >> k;
 
     if (n == 1) {
-        cout << pow_2[k] << endl;
+        cout << mpow(2, k) << endl;
         return;
     }
 
@@ -91,23 +98,21 @@ void solve()
         }
         cout << ans << endl;
     } else {
-        ll tt = 0;
-        for (ll i=0; i<=n-2; i++) {
-            tt += ncr(n, i, MOD) % MOD;
-            tt %= MOD;
-        }
-        ll ncr_pow[k+1];
-        ncr_pow[0] = 1;
-        for (ll i=1; i<=k; i++) {
-            ncr_pow[i] = ncr_pow[i-1] * (tt % MOD);
-            ncr_pow[i] %= MOD;
-        }
-        ll ans = ncr_pow[k];
-        for (int i=1; i<=k; i++) {
-            ans += ((ncr_pow[k-i] % MOD) * (pow_2[2 * i - 2] % MOD)) % MOD;
-            ans %= MOD;
-        }
-        cout << ans << endl;
+        ll eq = 0;
+		for (ll i = 0; i < n; i += 2) {
+			eq = (eq + ncr(n, i, MOD)) % MOD;
+		}
+        ll ans = 0;
+        for (ll i = 0; i <= k; i++) {
+			ll cur = 1;
+			cur = (cur * mpow(eq, i)) % MOD;
+			
+			if (i < k - 1) {
+				cur = (cur * mpow(2, n * (k - i - 1))) % MOD;
+			}
+			ans = (ans + cur) % MOD;
+		}
+		cout << ans << '\n';
     }
 }
 

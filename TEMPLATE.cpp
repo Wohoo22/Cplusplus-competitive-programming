@@ -6,19 +6,40 @@ using namespace std;
     cout.tie(NULL);
 #define INP freopen("S.INP", "r", stdin);
 #define ll long long
-#define MOD 1000000007
-#define CI \
-    int ci(char c) { return c - 'a'; }
-#define CUTLAST \
-    int cut_last(int x, int n) { return x % (int)pow(10, n); }
-#define IC \
-    char ic(int i) { return "abcdefghijklmnopqrstuvwxyz"[i]; }
-/*
-    RANDOM:
-    rand() % (max – min + 1)
-*/
+#define mod 1000000007
+int ci(char c) { 
+    return c - 'a'; 
+}
+ll cut_last(int x, int n) { 
+    return x % (int)pow(10, n); 
+}
+char ic(int i) { 
+    return "abcdefghijklmnopqrstuvwxyz"[i]; 
+}
+ll mpow(ll base, ll exp) {
+    ll res = 1;
+    while (exp) {
+        if (exp % 2 == 1) {
+                res = (res * base) % mod;
+        }
+        exp >>= 1;
+        base = (base * base) % mod;
+    }
+    return res;
+}
+ll madd(ll a, ll b) {
+    return (a + b) % mod;
+}
+ll msub(ll a, ll b) {
+    return (((a - b) % mod) + mod) % mod;
+}
+ll mmul(ll a, ll b) {
+    return ((a % mod) * (b % mod)) % mod;
+}
 
-void solve()
+/* ---------------------------------- END TEMPLATE ---------------------------------- */
+
+void solve(int tc)
 {
 }
 
@@ -30,8 +51,8 @@ int main()
 #endif
     int t;
     cin >> t;
-    while (t--)
-        solve();
+    for (int i=1; i<=t; i++)
+        solve(i);
     return 0;
 }
 /* 
