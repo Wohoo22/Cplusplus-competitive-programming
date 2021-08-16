@@ -1,25 +1,19 @@
 #include<bits/stdc++.h>
 using namespace std;
+const int N=2e5+5,P=1e9+7;
+int T,n,k,f[N],w[N];
+void work(){
+	scanf("%d%d",&n,&k);f[0]=1;
+	for (int i=1,v=1;i<=k;i++,v=1ll*v*w[n]%P){
+		if (n&1) f[i]=1ll*(w[n-1]+1)*f[i-1]%P;
+		else f[i]=(1ll*(w[n-1]-1)*f[i-1]%P+v)%P;
+	}
+	printf("%d\n",f[k]);
+}
 int main(){
- int t;
-cin>>t;
-while(t--){
-long long int n;
-cin>>n;
-long long int a[n],sum=0;
-sum=sum+2*n-1;
-for(int i=0;i<n;i++)
-cin>>a[i];
-for(int i=0;i<n-2;i++){
-if(a[i]<a[i+1]&&a[i+1]>a[i+2]||a[i]>a[i+1]&&a[i+2]>a[i+1])
-sum++;
-}
-for(int i=0;i<n-3;i++){
-    int k=max(a[i+1],a[i+2]);
-    int l=min(a[i+1],a[i+2]);
-    if(max(a[i],a[i+3])<k&&min(a[i],a[i+3])>l)
-    sum++;
-}
-cout<<sum<<endl;
-}
+	w[0]=1;
+	for (int i=1;i<N;i++)
+		w[i]=(w[i-1]<<1)%P;
+	for (scanf("%d",&T);T--;work());
+	return 0;
 }

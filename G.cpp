@@ -24,14 +24,12 @@ int main(int argc, char *argv[])
     registerGen(argc, argv, 1);
     FAST;
     // INP;
-    int t = rnd.next(5,5);
+    int t = rnd.next(1,1);
     cout << t << endl;
     while(t--) {
-        int n = rnd.next(1, 7);
-        cout << n << endl;
-        while (n--)
-            cout << rnd.next(1, 20) << ' ';
-        cout << endl;
+        int n = rnd.next(1, 4);
+        int k = rnd.next(1, 4);
+        cout << n << ' ' << k  << endl;
     }
 }
 /* 
