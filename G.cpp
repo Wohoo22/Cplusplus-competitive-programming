@@ -18,21 +18,19 @@ using namespace std;
     RANDOM:
     rand() % (max – min + 1)
 */
-
+IC;
 int main(int argc, char *argv[])
 {
     registerGen(argc, argv, 1);
     FAST;
     // INP;
-    int t = rnd.next(1,10);
+    int t = rnd.next(5,5);
     cout << t << endl;
-    while (t--) {
-        int n = rnd.next(20,100);
+    while(t--) {
+        int n = rnd.next(1, 7);
         cout << n << endl;
-        int p = n;
-        while (n--) {
-            cout << rnd.next(1, p) << ' ';
-        }
+        while (n--)
+            cout << rnd.next(1, 20) << ' ';
         cout << endl;
     }
 }

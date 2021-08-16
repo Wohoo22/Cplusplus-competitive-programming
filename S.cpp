@@ -18,52 +18,56 @@ using namespace std;
     rand() % (max – min + 1)
 */
 
-int matrix[1000][1000];
-int ro, co;
 
-bool contains(int k, int r, int c) {
-    for (int i=0; i<ro; i++) {
-        if (matrix[i][c] == k)
-            return true;
-    }
-    for (int i=0; i<co; i++)
-        if (matrix[r][i] == k)
-            return true;
-    return false;
+ll power(ll x, int y, int p)
+{
+	ll res = 1;
+	x = x % p; 
+	while (y > 0) {
+		if (y & 1) res = (res * x) % p;
+		y = y >> 1;
+		x = (x * x) % p;
+	}
+	return res;
 }
 
+ll mod_inverse(ll n, int p)
+{
+	return power(n, p - 2, p);
+}
+
+ll ncr(ll n, int r, int p)
+{
+	if (n < r) return 0;
+	if (r == 0) return 1;
+	ll fac[n + 1]; fac[0] = 1;
+	for (int i = 1; i <= n; i++)
+		fac[i] = (fac[i - 1] * i) % p;
+	return (fac[n] * mod_inverse(fac[r], p) % p * mod_inverse(fac[n - r], p) % p) % p;
+}
 void solve()
 {
-    cin >> ro >> co;
-    for (int i=0; i<ro; i++)
-        for (int j=0; j<co; j++)
-            matrix[i][j] = -1;
-    for (int i=0; i<ro; i++)
-        for (int j=0; j<co; j++) {
-            for (int k=0; k<=1000; k++) {
-                if (!contains(k, i, j))
-                {
-                    matrix[i][j] = k;
-                    break;
-                }
-            }
+    ll n, k;
+    cin >> n >> k;
+
+    if (n % 2 == 0) {
+        ll ans = 1;
+        for (ll i=0; i<=n-1; i+=2) {
+
         }
-    
-    int sum = 0;
-    for (int i=0; i<ro; i++) {
-        for (int j=0; j<co; j++) {
-            cout << matrix[i][j] << ' ';
-            sum += matrix[i][j];
-        }
-        cout << endl;
     }
-    cout << "sum " << sum;
 }
 
 int main()
 {
     FAST;
-    solve();
+#ifndef ONLINE_JUDGE
+    INP;
+#endif
+    int t;
+    cin >> t;
+    while (t--)
+        solve();
     return 0;
 }
 /* 
