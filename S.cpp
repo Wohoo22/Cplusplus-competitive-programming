@@ -6,125 +6,92 @@ using namespace std;
     cout.tie(NULL);
 #define INP freopen("S.INP", "r", stdin);
 #define ll long long
-#define MOD 1000000007
-#define CI \
-    int ci(char c) { return c - 'a'; }
-#define CUTLAST \
-    int cut_last(int x, int n) { return x % (int)pow(10, n); }
-#define IC \
-    char ic(int i) { return "abcdefghijklmnopqrstuvwxyz"[i]; }
-/*
-    RANDOM:
-    rand() % (max – min + 1)
-*/
-
-
-const ll N = 200005;
-ll pow_2[N * 2];
-
-ll factorial_num_inverse[N + 1];
-ll natural_num_inverse[N + 1];
-ll fact[N + 1];
-
-void inverse_of_number(ll p)
-{
-	natural_num_inverse[0] = natural_num_inverse[1] = 1;
-	for (int i = 2; i <= N; i++)
-		natural_num_inverse[i] = natural_num_inverse[p % i] * (p - p / i) % p;
+#define mod 1000000007
+ll get_last(int x, int n) { 
+    return x % (int)pow(10, n); 
 }
-
-void inverse_of_factorial(ll p)
-{
-	factorial_num_inverse[0] = factorial_num_inverse[1] = 1;
-	for (int i = 2; i <= N; i++)
-		factorial_num_inverse[i] = (natural_num_inverse[i] * factorial_num_inverse[i - 1]) % p;
-}
-
-void factorial(ll p)
-{
-	fact[0] = 1;
-	for (int i = 1; i <= N; i++) {
-		fact[i] = (fact[i - 1] * i) % p;
-	}
-}
-
-ll ncr(ll N, ll R, ll p)
-{
-	ll ans = ((fact[N] * factorial_num_inverse[R])
-			% p * factorial_num_inverse[N - R])
-			% p;
-	return ans;
-}
-
-
-void precompute() {
-    inverse_of_number(MOD);
-    inverse_of_factorial(MOD);
-    factorial(MOD);
-}
-
 ll mpow(ll base, ll exp) {
     ll res = 1;
     while (exp) {
-        if (exp % 2 == 1){
-            res = (res * base) % MOD;
-    }
-    exp >>= 1;
-    base = (base * base) % MOD;
+        if (exp % 2 == 1) 
+            res = (res * base) % mod;
+        exp >>= 1;
+        base = (base * base) % mod;
     }
     return res;
 }
+ll madd(ll a, ll b) {
+    return (a + b) % mod;
+}
+ll msub(ll a, ll b) {
+    return (((a - b) % mod) + mod) % mod;
+}
+ll mmul(ll a, ll b) {
+    return ((a % mod) * (b % mod)) % mod;
+}
 
-void solve()
+/* ---------------------------------- END TEMPLATE ---------------------------------- */
+
+int n, k;
+vector<int> a;
+set<int> ele;
+map<int, bool> visited; 
+int close;
+
+bool exist(int val) {
+    return ele.find(val) != ele.end();
+}
+
+bool open(int u) {
+    visited[u] = true;
+    bool is_open = true;
+    if (exist(u - k) && !visited[u - k]) {
+        if (open(u - k))
+            is_open = false;
+    }
+    if (exist(u + k) && !visited[u + k]) {
+        if (open(u + k))
+        is_open = false;
+    }
+    if (is_open == false)
+        close++;
+
+    return is_open;
+}
+
+void solve(int tc)
 {
-    ll n, k;
     cin >> n >> k;
-
-    if (n == 1) {
-        cout << mpow(2, k) << endl;
-        return;
+    a.clear();
+    for (int i=0; i<n; i++) {
+        int c; cin >> c;
+        a.push_back(c);
     }
-
-    if (n % 2 != 0) {
-        ll tt = 1;  
-        for (ll i=0; i<=n-1; i+=2) {
-            tt += ncr(n, i, MOD) % MOD;
-            tt %= MOD;
+    ele.clear();
+    for (auto &e : a)
+        ele.insert(e);
+    visited.clear();
+    for (auto &e : a)
+        visited[e] = false;
+    int ans = 0;
+    for (auto &e : a) {
+        if (!visited[e]) {
+            close = 0;
+            open(e);
+            ans += close;
         }
-        ll ans = 1;
-        for (ll i=0; i<k; i++) {
-            ans *= tt % MOD;
-            ans %= MOD;
-        }
-        cout << ans << endl;
-    } else {
-        ll eq = 0;
-		for (ll i = 0; i < n; i += 2) {
-			eq = (eq + ncr(n, i, MOD)) % MOD;
-		}
-        ll ans = 0;
-        for (ll i = 0; i <= k; i++) {
-			ll cur = 1;
-			cur = (cur * mpow(eq, i)) % MOD;
-			
-			if (i < k - 1) {
-				cur = (cur * mpow(2, n * (k - i - 1))) % MOD;
-			}
-			ans = (ans + cur) % MOD;
-		}
-		cout << ans << '\n';
     }
+    cout << ans << endl;
 }
 
 int main()
 {
-    FAST;   
-    // INP;
-    int t;
+    FAST;
+    INP;
+    int t = 1;
     cin >> t;
-    precompute();
-    while (t--)
-        solve();
+    for (int i=1; i<=t; i++)
+        solve(i);
     return 0;
 }
 /* 

@@ -1,0 +1,24 @@
+Name:
+    One boy one cat (Không bắt buộc)
+
+Statement:
+    - Quân đang ở trong phòng chơi cùng con mèo tên là Simon của anh ấy
+
+    - Phòng của Quân được thể hiện bằng một ma trận có n hàng, m cột. Gọi (i,j) là vị trí tại hàng i, cột j.
+    Simon đang ở vị trí (i,j). Quân sẽ ném 2 viên đá vào hai vị trí bất kì trong phòng (2 vị trí có thể trùng)
+
+    - Simon sẽ đi nhặt 2 viên đá mang về vị trí (i,j) ban đầu của Simon theo đường đi sau: đường đi ngắn nhất từ (i,j) đi qua cả 2 vị 
+    trí của 2 viên đá và quay về (i,j). Lưu ý, từ vị trí (x,y), Simon chỉ có thể đi sang 4 ô liền kề: (x+1,y), (x−1,y), (x,y+1), (x,y−1)
+    
+    => Quân muốn biết Quân nên ném 2 viên đá vào 2 vị trí nào để Simon phải đi quãng đường dài nhất.
+
+Input:
+    - Dòng đầu tiên chứa 1 số nguyên t - số lượng test (1 <= t <= 1000)
+    - t dòng tiếp theo, mỗi dòng chứa 4 số nguyên: n, m, i, j - số hàng, số cột và tọa độ vị trí ban đầu của Simon
+        (1 <= n,m <= 10^9, 1 <= i <=n, 1 <= j <= m)
+    
+Output:
+    - t dòng tương ứng với t test, mỗi dòng in kết quả của test bằng 4 số nguyên: x1, y1, x2, y2 - vị trí 2 viên đá sẽ được Quân ném
+
+Giới hạn thời gian: 1s
+Giới hạn bộ nhớ: 256mb

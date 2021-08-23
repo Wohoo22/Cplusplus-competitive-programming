@@ -1,19 +1,132 @@
-#include<bits/stdc++.h>
+#include "bits/stdc++.h"
 using namespace std;
-const int N=2e5+5,P=1e9+7;
-int T,n,k,f[N],w[N];
-void work(){
-	scanf("%d%d",&n,&k);f[0]=1;
-	for (int i=1,v=1;i<=k;i++,v=1ll*v*w[n]%P){
-		if (n&1) f[i]=1ll*(w[n-1]+1)*f[i-1]%P;
-		else f[i]=(1ll*(w[n-1]-1)*f[i-1]%P+v)%P;
+#define FAST                          \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL);
+#define INP freopen("S.INP", "r", stdin);
+#define ll long long
+#define mod 1000000007
+ll get_last(int x, int n) { 
+    return x % (int)pow(10, n); 
+}
+ll mpow(ll base, ll exp) {
+    ll res = 1;
+    while (exp) {
+        if (exp % 2 == 1) 
+            res = (res * base) % mod;
+        exp >>= 1;
+        base = (base * base) % mod;
+    }
+    return res;
+}
+ll madd(ll a, ll b) {
+    return (a + b) % mod;
+}
+ll msub(ll a, ll b) {
+    return (((a - b) % mod) + mod) % mod;
+}
+ll mmul(ll a, ll b) {
+    return ((a % mod) * (b % mod)) % mod;
+}
+
+/* ---------------------------------- END TEMPLATE ---------------------------------- */
+
+void subsetsUtil(vector<int> &A, vector<vector<int>> &res,
+				 vector<int> &subset, int index)
+{
+	res.push_back(subset);
+	for (int i = index; i < A.size(); i++)
+	{
+		subset.push_back(A[i]);
+		subsetsUtil(A, res, subset, i + 1);
+		subset.pop_back();
 	}
-	printf("%d\n",f[k]);
+	return;
 }
-int main(){
-	w[0]=1;
-	for (int i=1;i<N;i++)
-		w[i]=(w[i-1]<<1)%P;
-	for (scanf("%d",&T);T--;work());
-	return 0;
+
+vector<vector<int>> subsets(vector<int> &A)
+{
+	vector<int> subset;
+	vector<vector<int>> res;
+	int index = 0;
+	subsetsUtil(A, res, subset, index);
+	return res;
 }
+
+int calc(vector<int> choose, vector<pair<int,int>> sets) {
+    vector<int> chosen(10000, false);
+    int ans = 0;
+    for (auto &x : choose) {
+        pair<int,int> set = sets[x];
+        if (chosen[set.first] || chosen[set.second])
+            continue;
+        chosen[set.first] = true;
+        chosen[set.second] = true;
+        ans++;
+    }
+    return ans;
+}
+
+void solve(int tc)
+{
+	int n, k;
+	cin >> n >> k;
+	int a[n];
+	for (int i=0; i<n; i++) cin >> a[i];
+	vector<pair<int,int>> sets;
+	for (int i=0; i<n; i++)
+		for (int j=i+1; j<n; j++)
+			if (abs(a[i] - a[j]) == k)
+				sets.push_back({a[i], a[j]});
+
+	vector<int> indexes;
+    for (int i=0; i<sets.size(); i++)
+        indexes.push_back(i);
+    vector<vector<int>> choose = subsets(indexes);
+    int ans = 0;
+    for (auto &chs : choose) {
+        ans = max(ans, calc(chs, sets));
+    }
+
+
+    // cout << "SETs" << endl;
+    // for (auto &p : sets) {
+    //     cout << '{' << p.first << ',' << p.second << '}' << ", ";
+    // }
+    // cout << endl;
+    // for (auto &chs : choose) {
+    //     if (calc(chs, sets) == ans) {
+    //         cout << "ANS" << endl;
+    //         vector<int> chosen(10000, false);
+    //         for (auto &x : chs) {
+    //             pair<int,int> set = sets[x];
+    //             if (chosen[set.first] || chosen[set.second])
+    //                 continue;
+    //             cout << '{' << sets[x].first << ',' << sets[x].second << '}' << ", ";
+    //             chosen[set.first] = true;
+    //             chosen[set.second] = true;
+    //         }
+    //         cout << endl;
+    //         break;
+    //     }
+    // }
+
+    cout << ans << endl;
+}
+
+int main()
+{
+    FAST;
+    // INP;
+    int t = 1;
+    cin >> t;
+    for (int i=1; i<=t; i++)
+        solve(i);
+    return 0;
+}
+/* 
+    [Linux] Set/Unset read-only:
+    sudo chattr +i TEMPLATE.cpp
+    sudo chattr -i TEMPLATE.cpp
+*/

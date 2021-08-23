@@ -1,0 +1,23 @@
+Name:
+    Super Cache
+
+Statement:
+    Bạn sẽ phải khởi tạo một cấu trúc dữ liệu để caching (bạn nên tìm hiểu trước nếu chưa biết), tạm gọi 
+    là một class Cache, cần có những chức năng như sau:
+    + Cache(int capacity): có thể khởi tạo và cài đặt số lượng phẩn tử tối đa tương ứng tham số câpcity
+    + int get(int key): trả về value của một key nếu tồn tại, nếu không tồn tại trả về -1
+    + void put(int key, int value): 
+        - cập nhật giá trị của key nếu key đã tồn tại
+        - nếu key không tồn tại, thêm key-value mới vào cache
+        - nếu số lượng key đã đầy, xóa key-value ít được get nhất
+Input:
+    - Dòng đầu tiên chứa số nguyên q - số lượng câu lệnh bạn cần thực hiện
+    - q dòng tiếp theo, mỗi dòng chứa một câu lệnh, có những dạng lệnh như sau
+        + 'create n': bạn cần khởi tạo Cache với capacity là số nguyên n
+        + 'get k': bạn cần get từ cache với key là một số nguyên k, và in ra màn hình value vừa get
+        + 'put k v': bạn cần gọi hàm put với tham số key = số nguyên k, tham số value = số nguyên v
+Output:
+    - với mỗi lệnh 'get k', bạn cần in ra một dòng chứa kết quả khi gọi hàm get(k)
+
+Giới hạn thời gian: 1s
+Giới hạn bộ nhớ: 256mb
