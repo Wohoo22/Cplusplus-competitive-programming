@@ -51,7 +51,7 @@ bool open(int u) {
     }
     if (exist(u + k) && !visited[u + k]) {
         if (open(u + k))
-        is_open = false;
+            is_open = false;
     }
     if (is_open == false)
         close++;
