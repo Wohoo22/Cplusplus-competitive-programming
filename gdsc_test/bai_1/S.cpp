@@ -4,7 +4,6 @@ using namespace std;
     ios_base::sync_with_stdio(false); \
     cin.tie(NULL);                    \
     cout.tie(NULL);
-#define INP freopen("S.INP", "r", stdin);
 #define ll long long
 #define mod 1000000007
 ll get_last(int x, int n) { 
@@ -52,7 +51,8 @@ void solve(int tc)
 int main()
 {
     FAST;
-    // INP;
+    freopen("input04.txt", "r", stdin);
+    freopen("output04.txt", "w", stdout);
     int t = 1;
     cin >> t;
     for (int i=1; i<=t; i++)

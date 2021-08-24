@@ -6,61 +6,66 @@ using namespace std;
     cout.tie(NULL);
 #define INP freopen("S.INP", "r", stdin);
 #define ll long long
-#define mod 1000000007
-ll get_last(int x, int n) { 
-    return x % (int)pow(10, n); 
-}
-ll mpow(ll base, ll exp) {
-    ll res = 1;
-    while (exp) {
-        if (exp % 2 == 1) 
-            res = (res * base) % mod;
-        exp >>= 1;
-        base = (base * base) % mod;
-    }
-    return res;
-}
-ll madd(ll a, ll b) {
-    return (a + b) % mod;
-}
-ll msub(ll a, ll b) {
-    return (((a - b) % mod) + mod) % mod;
-}
-ll mmul(ll a, ll b) {
-    return ((a % mod) * (b % mod)) % mod;
-}
+#define MOD 1000000007
+#define CHARNT \
+    int char_int(char c) { return c - 'a'; }
+#define CUTLAST \
+    int cut_last(int x, int n) { return x % (int)pow(10, n); }
+#define INTCHR \
+    char int_char(int i) { return "abcdefghijklmnopqrstuvwxyz"[i]; }
 
-/* ---------------------------------- END TEMPLATE ---------------------------------- */
-
-void solve(int tc)
+ll dist(ll x1, ll y1, ll x2, ll y2)
 {
-    int n, k;
-    cin >> n >> k;
-    int a[n];
-    for (int i=0; i<n; i++)
-        cin >> a[i];
-    set<int> ele;
-    for (auto &e : a)
-        ele.insert(e);
-    int ans = 0;
-    for (auto &e : a)
-        if (ele.find(e - k) != ele.end())
-            ans++;
-    cout << ans << endl;
+    return abs(x1 - x2) + abs(y1 - y2);
+}
+
+void solve()
+{
+    ll n, m, i, j;
+    cin >> n >> m >> i >> j;
+
+    ll c[4][2];
+
+    c[0][0] = 1;
+    c[0][1] = 1;
+
+    c[1][0] = 1;
+    c[1][1] = n;
+
+    c[2][0] = m;
+    c[2][1] = n;
+
+    c[3][0] = m;
+    c[3][1] = 1;
+
+    ll max_dist = -1;
+    ll c1 = 0;
+    ll c2 = 0;
+    for (int i = 0; i < 4; i++)
+        for (int j = i + 1; j < 4; j++)
+        {
+            ll dis = dist(j, i, c[i][0], c[i][1]) + dist(c[i][0], c[i][1], c[j][0], c[j][1]) + dist(c[j][0], c[j][1], j, i);
+            if (dis >= max_dist)
+            {
+                c1 = i;
+                c2 = j;
+                max_dist = dis;
+            }
+        }
+    cout << c[c1][1] << " " << c[c1][0] << " " << c[c2][1] << " " << c[c2][0] << endl;
 }
 
 int main()
 {
     FAST;
     // INP;
-    int t = 1;
+    int t;
     cin >> t;
-    for (int i=1; i<=t; i++)
-        solve(i);
+    while (t--)
+        solve();
     return 0;
-}
-/* 
-    [Linux] Set/Unset read-only:
+    /* [Linux] Set/Unset read-only:
     sudo chattr +i TEMPLATE.cpp
     sudo chattr -i TEMPLATE.cpp
-*/
+    */
+}

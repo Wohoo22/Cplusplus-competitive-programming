@@ -33,18 +33,31 @@ ll mmul(ll a, ll b) {
 
 /* ---------------------------------- END TEMPLATE ---------------------------------- */
 
+bool palindrome(string s) {
+    int l = 0;
+    int r = s.size() - 1;
+    while (l < r) {
+        if (s[l] != s[r])
+            return false;
+        l++, r--;
+    }
+    return true;
+}
+
 void solve(int tc)
 {
-    int n, k;
-    cin >> n >> k;
-    int a[n];
-    for (int i=0; i<n; i++) cin >> a[i];
-    int ans = 0;
-    for (int i=0; i<n; i++)
-        for (int j=i+1; j<n; j++)
-            if (abs(a[i] - a[j]) == k)
-                ans++;
-    cout << ans << endl;
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    sort(s.begin(), s.end());
+    do {
+        if (palindrome(s)) {
+            cout << "YES\n";
+            return;
+        }
+    } while (next_permutation(s.begin(), s.end()));
+    cout << "NO\n";
 }
 
 int main()
