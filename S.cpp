@@ -32,63 +32,22 @@ ll mmul(ll a, ll b) {
 
 /* ---------------------------------- END TEMPLATE ---------------------------------- */
 
-int n, k;
-vector<int> a;
-set<int> ele;
-map<int, bool> visited; 
-int close;
-
-bool exist(int val) {
-    return ele.find(val) != ele.end();
-}
-
-bool open(int u) {
-    visited[u] = true;
-    bool is_open = true;
-    if (exist(u - k) && !visited[u - k]) {
-        if (open(u - k))
-            is_open = false;
-    }
-    if (exist(u + k) && !visited[u + k]) {
-        if (open(u + k))
-        is_open = false;
-    }
-    if (is_open == false)
-        close++;
-
-    return is_open;
-}
-
 void solve(int tc)
 {
-    cin >> n >> k;
-    a.clear();
-    for (int i=0; i<n; i++) {
-        int c; cin >> c;
-        a.push_back(c);
-    }
-    ele.clear();
-    for (auto &e : a)
-        ele.insert(e);
-    visited.clear();
-    for (auto &e : a)
-        visited[e] = false;
-    int ans = 0;
-    for (auto &e : a) {
-        if (!visited[e]) {
-            close = 0;
-            open(e);
-            ans += close;
-        }
-    }
-    cout << ans << endl;
+    int n;
+    cin >> n;
+    int a[n];
+    for (int i=0; i<n; i++) cin >> a[i];
+
+    
 }
 
 int main()
 {
     FAST;
-    // INP;
-    // freopen("S.OUT", "w", stdout);
+#ifndef ONLINE_JUDGE
+    INP;
+#endif
     int t = 1;
     cin >> t;
     for (int i=1; i<=t; i++)
