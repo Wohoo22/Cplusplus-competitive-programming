@@ -5,6 +5,7 @@ using namespace std;
     cin.tie(NULL);                    \
     cout.tie(NULL);
 #define INP freopen("S.INP", "r", stdin);
+#define OUT freopen("S.OUT", "w", stdout);
 #define ll long long
 #define mod 1000000007
 ll get_last(int x, int n) { 
