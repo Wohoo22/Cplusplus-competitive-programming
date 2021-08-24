@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 {
     registerGen(argc, argv, 1);
     FAST;
-    // INP;
-    int t = rnd.next(1,1);
+    freopen("input05.txt", "w", stdout);
+    int t = rnd.next(1, 1);
     cout << t << endl;
     while(t--) {
         int n = rnd.next(100000, 100000);
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         cout << n << ' ' << k << endl;
 
         // diff set cnt
-        int diff = rnd.next(1, n);
+        int diff = rnd.next(n/2, n);
         int a[n]; 
         a[0] = rnd.next(1,20);
 

@@ -87,8 +87,8 @@ void solve(int tc)
 int main()
 {
     FAST;
-    // INP;
-    // freopen("S.OUT", "w", stdout);
+    freopen("input01.txt", "r", stdin);
+    freopen("output01.txt", "w", stdout);
     int t = 1;
     cin >> t;
     for (int i=1; i<=t; i++)
