@@ -89,29 +89,6 @@ void solve(int tc)
         ans = max(ans, calc(chs, sets));
     }
 
-
-    // cout << "SETs" << endl;
-    // for (auto &p : sets) {
-    //     cout << '{' << p.first << ',' << p.second << '}' << ", ";
-    // }
-    // cout << endl;
-    // for (auto &chs : choose) {
-    //     if (calc(chs, sets) == ans) {
-    //         cout << "ANS" << endl;
-    //         vector<int> chosen(10000, false);
-    //         for (auto &x : chs) {
-    //             pair<int,int> set = sets[x];
-    //             if (chosen[set.first] || chosen[set.second])
-    //                 continue;
-    //             cout << '{' << sets[x].first << ',' << sets[x].second << '}' << ", ";
-    //             chosen[set.first] = true;
-    //             chosen[set.second] = true;
-    //         }
-    //         cout << endl;
-    //         break;
-    //     }
-    // }
-
     cout << ans << endl;
 }
 
