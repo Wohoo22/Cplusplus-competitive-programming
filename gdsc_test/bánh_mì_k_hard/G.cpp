@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 {
     registerGen(argc, argv, 1);
     FAST;
-    freopen("input05.txt", "w", stdout);
+    // freopen("input05.txt", "w", stdout);
     int t = rnd.next(1, 1);
     cout << t << endl;
     while(t--) {

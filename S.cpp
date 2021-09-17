@@ -33,9 +33,38 @@ ll mmul(ll a, ll b) {
 
 /* ---------------------------------- END TEMPLATE ---------------------------------- */
 
+vector<int> vals;
+vector<int> adj[20000];
+
+int dfs(int u, int par, int depth) {
+    int child = 0;
+    for (auto &v : adj[u]) 
+        if (v != par) 
+            child += dfs(v, u, depth + 1) + 1;
+    vals.push_back(depth - child);
+    return child + 1;
+}
+
 void solve(int tc)
 {
-    
+    int n, k;
+    cin >> n >> k;
+    for (int i=0; i<n-1; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    dfs(1, 0, 0);
+    sort(vals.begin(), vals.end());
+    int rm = n - k;
+    int ans = 0;
+    for (int i=vals.size() - 1; i>=0; i--) {
+        if (rm <= 0) break;
+        ans += vals[i];
+        rm--;
+    }   
+    cout << ans;
 }
 
 int main()
@@ -45,7 +74,6 @@ int main()
     INP;
 #endif
     int t = 1;
-    cin >> t;
     for (int i=1; i<=t; i++)
         solve(i);
     return 0;

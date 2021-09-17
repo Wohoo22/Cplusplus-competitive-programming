@@ -23,15 +23,44 @@ int main(int argc, char *argv[])
 {
     registerGen(argc, argv, 1);
     FAST;
-    INP;
-    int t = rnd.next(50, 50);
+    // freopen("input05.txt", "w", stdout);
+    int t = rnd.next(1, 10);
     cout << t << endl;
     while(t--) {
-        int n = rnd.next(1, 1000000);
-        int m = rnd.next(1, 1000000);
-        int i = rnd.next(1, n);
-        int j = rnd.next(1, m);
-        cout << n << ' ' << m << ' ' << i << ' ' << j << endl;
+        int n = rnd.next(1, 15);
+        int k = rnd.next(1, 50);
+        cout << n << ' ' << k << endl;
+
+        // diff set cnt
+        int diff = rnd.next(n/2, n);
+        int a[n]; 
+        a[0] = rnd.next(1,20);
+
+        // init diff set
+        int j = 0;
+        for (int i=1; i<diff; i++) {
+            a[i] = a[i-1] + k;
+            j = i;
+            if (a[i] >= 1000000)
+                break;
+        }
+        
+        // complete
+        for (int i=j+1; i<n; i++)
+            if (i > 0) a[i] = a[i-1] + rnd.next(1,20);
+            else a[i] = rnd.next(1, 20);
+
+        // randomize
+        for (int i=0; i<n; i++) {
+            int j = rnd.next(0,n-1);
+            int tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+        }
+
+        for (int i=0; i<n; i++)
+            cout << a[i] << ' ';
+        cout << endl;
     }
 }
 /* 

@@ -5,7 +5,6 @@ using namespace std;
     cin.tie(NULL);                    \
     cout.tie(NULL);
 #define INP freopen("S.INP", "r", stdin);
-#define OUT freopen("S.OUT", "w", stdout);
 #define ll long long
 #define mod 1000000007
 ll get_last(int x, int n) { 
@@ -33,31 +32,64 @@ ll mmul(ll a, ll b) {
 
 /* ---------------------------------- END TEMPLATE ---------------------------------- */
 
-bool palindrome(string s) {
-    int l = 0;
-    int r = s.size() - 1;
-    while (l < r) {
-        if (s[l] != s[r])
-            return false;
-        l++, r--;
+void subsetsUtil(vector<int> &A, vector<vector<int>> &res,
+				 vector<int> &subset, int index)
+{
+	res.push_back(subset);
+	for (int i = index; i < A.size(); i++)
+	{
+		subset.push_back(A[i]);
+		subsetsUtil(A, res, subset, i + 1);
+		subset.pop_back();
+	}
+	return;
+}
+
+vector<vector<int>> subsets(vector<int> &A)
+{
+	vector<int> subset;
+	vector<vector<int>> res;
+	int index = 0;
+	subsetsUtil(A, res, subset, index);
+	return res;
+}
+
+int calc(vector<int> choose, vector<pair<int,int>> sets) {
+    vector<bool> chosen(10000, false);
+    int ans = 0;
+    for (auto &x : choose) {
+        pair<int,int> set = sets[x];
+        if (chosen[set.first] || chosen[set.second])
+            continue;
+        chosen[set.first] = true;
+        chosen[set.second] = true;
+        ans++;
     }
-    return true;
+    return ans;
 }
 
 void solve(int tc)
 {
-    int n;
-    cin >> n;
-    string s;
-    cin >> s;
-    sort(s.begin(), s.end());
-    do {
-        if (palindrome(s)) {
-            cout << "YES\n";
-            return;
-        }
-    } while (next_permutation(s.begin(), s.end()));
-    cout << "NO\n";
+	int n, k;
+	cin >> n >> k;
+	int a[n];
+	for (int i=0; i<n; i++) cin >> a[i];
+	vector<pair<int,int>> sets;
+	for (int i=0; i<n; i++)
+		for (int j=i+1; j<n; j++)
+			if (abs(a[i] - a[j]) == k)
+				sets.push_back({a[i], a[j]});
+
+	vector<int> indexes;
+    for (int i=0; i<sets.size(); i++)
+        indexes.push_back(i);
+    vector<vector<int>> choose = subsets(indexes);
+    int ans = 0;
+    for (auto &chs : choose) {
+        ans = max(ans, calc(chs, sets));
+    }
+
+    cout << ans << endl;
 }
 
 int main()
