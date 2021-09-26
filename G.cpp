@@ -24,43 +24,25 @@ int main(int argc, char *argv[])
     registerGen(argc, argv, 1);
     FAST;
     // freopen("input05.txt", "w", stdout);
-    int t = rnd.next(1, 10);
+    int t = rnd.next(1, 1);
     cout << t << endl;
     while(t--) {
-        int n = rnd.next(1, 15);
-        int k = rnd.next(1, 50);
-        cout << n << ' ' << k << endl;
-
-        // diff set cnt
-        int diff = rnd.next(n/2, n);
-        int a[n]; 
-        a[0] = rnd.next(1,20);
-
-        // init diff set
-        int j = 0;
-        for (int i=1; i<diff; i++) {
-            a[i] = a[i-1] + k;
-            j = i;
-            if (a[i] >= 1000000)
-                break;
-        }
-        
-        // complete
-        for (int i=j+1; i<n; i++)
-            if (i > 0) a[i] = a[i-1] + rnd.next(1,20);
-            else a[i] = rnd.next(1, 20);
-
-        // randomize
-        for (int i=0; i<n; i++) {
-            int j = rnd.next(0,n-1);
-            int tmp = a[i];
-            a[i] = a[j];
-            a[j] = tmp;
-        }
-
-        for (int i=0; i<n; i++)
-            cout << a[i] << ' ';
-        cout << endl;
+       int r = rnd.next(1, 3);
+       int g = rnd.next(1, 3);
+       int b = rnd.next(1, 3);
+       cout << r << ' ' << g << ' ' << b << endl;
+       for (int i=0; i<r; i++) {
+            cout << rnd.next(1, 10) << ' ';
+       }
+       cout << endl;
+        for (int i=0; i<g; i++) {
+            cout << rnd.next(1, 10) << ' ';
+       }
+       cout << endl;
+        for (int i=0; i<b; i++) {
+            cout << rnd.next(1, 10) << ' ';
+       }
+       cout << endl;
     }
 }
 /* 
