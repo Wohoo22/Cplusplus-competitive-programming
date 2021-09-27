@@ -368,7 +368,7 @@ void solve(int tc)
 int main()
 {
     FAST;
-    // INP;
+    INP;
     int t = 1;
     cin >> t;
     for (int i=1; i<=t; i++)
